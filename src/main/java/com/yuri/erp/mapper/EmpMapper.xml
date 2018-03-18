@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.yuri.erp.mapper.EmpMapper">
+
+	<!-- 查询所有Employee -->
+	<select id="selectAllEmps" resultType="employee">
+		select * from erp_emp
+	</select>
+
+	<!-- 根据id查询Employee -->
+	<select id="selectEmpById" resultType="employee">
+		select * from erp_emp where id=#{id}
+	</select>
+
+	<!-- 修改Employee-->
+	<update id="updateEmp" parameterType="employee">
+		update erp_emp
+		<set>
+			<if test="headImage!=null">
+				headImage=#{headImage},
+			</if>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="hiredate!=null">
+				hiredate=#{hiredate},
+			</if>
+			<if test="gender!=null">
+				gender=#{gender},
+			</if>
+			<if test="salary!=null">
+				salary=#{salary},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<!-- 删除Employee -->
+	<delete id="deleteEmp" parameterType="employee">
+		delete from erp_emp where id=#{id}
+	</delete>
+	
+	<!-- 分页查询Employee -->
+	<select id="selectEmpsByPage" resultType="employee">
+		<![CDATA[select outer_.* from
+		(
+		select rownum rownum_,core_.* from
+		(
+		select * from erp_emp
+		) core_ where rownum<=${pageNow}*${pageSize}
+		) outer_ where outer_.rownum_ >(${pageNow}-1)*${pageSize}]]>
+	</select>
+	
+	<!-- 查询Employee总人数 -->
+	<select id="selectEmpCount" resultType="int">
+		select count(*) from erp_emp
+	</select>
+</mapper>

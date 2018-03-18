@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.yuri.erp.mapper.UserMapper">
+
+	<!-- 根据username和password查询User -->
+	<select id="selectUser" resultType="user">
+		select * from erp_user where
+		username=#{username} and password=#{password}
+	</select>
+
+	<!-- 添加User -->
+	<insert id="insertUser" parameterType="user">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+			select erp_user_id.nextval from dual
+		</selectKey>
+		insert into erp_user values(#{id},#{username},#{password})
+	</insert>
+</mapper>
